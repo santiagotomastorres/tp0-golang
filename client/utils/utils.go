@@ -45,9 +45,28 @@ func LeerConsola() {
 func GenerarYEnviarPaquete() {
 	paquete := Paquete{}
 	// Leemos y cargamos el paquete
+	reader := bufio.NewReader(os.Stdin)
+
+	log.Println("Ingrese los valores del paquete (separados por comas)")
+
+	text, _ := reader.ReadString('\n')
+
+	text = text[:len(text)-1] // eliminamos el salto de linea
+
+	// Separamos los valores por comas
+
+	valores := []string{}
+	for _, valor := range text {
+		valores = append(valores, string(valor))
+	}
+
+	paquete.Valores = valores
 
 	log.Printf("paqute a enviar: %+v", paquete)
+
 	// Enviamos el paqute
+
+	EnviarPaquete(globals.ClientConfig.Ip, globals.ClientConfig.Puerto, paquete)
 }
 
 func EnviarMensaje(ip string, puerto int, mensajeTxt string) {
